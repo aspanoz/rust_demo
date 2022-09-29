@@ -1,0 +1,48 @@
+// вертикальная полосочка
+export HorizontalLine := Rectangle {
+    height: Size.border;
+    background: Skin.border;
+}
+
+// изображение
+export struct MediaItem := {
+		id: string,
+    path: string,
+    name: string,
+    tags: [string],
+		like: bool,
+}
+
+// настройки размеров
+export global Size := {
+    property <length> gap: 10px;
+    property <[length]> gaps: [
+      gap * 0.5,  // 0
+      gap * 1.33, // 1
+      gap * 1.5,  // 2
+      gap * 2,    // 3
+      gap * 2.5,  // 4
+      gap * 3     // 5
+    ];
+
+    property <length> base: 32pt;
+    property <length> header: 36pt + gaps[4];
+
+    // настройки border'ов
+    property <length> radius: 7px;
+    property <length> border: 1px;
+
+    // настройки шрифтов
+    property <int> font-fat: 900;
+    property <int> font-bold: 600;
+}
+
+// настройки цвета
+export global Skin := {
+    property <color> bg: #000;
+    property <color> paper: #030303;
+    property <color> fg: #444444;
+    property <color> acent: #c9c9c9;
+    property <color> title: #d5dbdb;
+    property <color> border: #a9a9a9;
+}

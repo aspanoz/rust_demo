@@ -1,0 +1,77 @@
+import { Skin, DayEvent, HorizontalLine, ButtonRound } from "common.slint";
+import { GameDateView } from "date.slint";
+
+Note := Rectangle {
+    callback on_change;
+    property <string> text;
+    height: input.preferred-height + Skin.gaps[3];
+    Rectangle {
+      clip: true;
+      width: parent.width - Skin.gaps[3];
+      background: Skin.paper;
+      border-width: Skin.border-width;
+      border-color: Skin.border-color;
+      input := TextInput {
+        width: parent.width - Skin.gaps[3];
+        vertical-alignment: center;
+        wrap: word-wrap;
+        text: root.text;
+        x: Skin.gap;
+        edited() => { root.on_change(); }
+      }
+} }
+
+export EventEdit := VerticalLayout {
+  property <[DayEvent]> events;
+  property <int> event-id;
+  property <int> day;
+  property <int> page;
+  property <bool> is-change;
+
+  callback note_changed(string, int, string);
+  callback title_changed(string, string);
+  callback note_add(string);
+
+  GridLayout {
+    Row { GameDateView { day <=> root.day; } }
+
+    Row { HorizontalLayout {
+        padding-left: Skin.gap;
+        padding-bottom: Skin.gap;
+        height: input.preferred-height + Skin.gaps[3];
+        input := TextInput {
+          wrap: word-wrap;
+          text: root.events[event-id].title;
+          edited() => {
+            root.title_changed(root.events[event-id].id, self.text);
+            if (!root.is-change) { root.is-change = true; }
+          }
+        }
+    } }
+
+    Row { HorizontalLine {} }
+
+    Row { VerticalLayout {
+        padding-top: Skin.gap;
+        padding-left: Skin.gap;
+        spacing: Skin.gap;
+        for note[index] in root.events[event-id].text: Note {
+            text: note;
+            width: root.width;
+            on_change() => {
+              root.note_changed(root.events[event-id].id, index, self.text);
+              if (!root.is-change) { root.is-change = true; }
+            }
+        }
+    } }
+
+    Row { HorizontalLayout {
+        padding-top: Skin.gaps[3];
+        alignment: center;
+        ButtonRound { clicked() => {
+          root.note_add(root.events[event-id].id);
+          if (!root.is-change) { root.is-change = true; }
+        } }
+    } }
+  }
+}

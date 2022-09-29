@@ -1,0 +1,71 @@
+import { Skin, DayEvent } from "common.slint";
+import { Header } from "header.slint";
+import { EventAdd } from "event-add.slint";
+import { EventEdit } from "event-edit.slint";
+import { DayView } from "day-view.slint";
+
+import "./UbuntuMono-R.ttf";
+import "./UbuntuMono-B.ttf";
+
+export { DayEvent }
+
+export App := Window {
+    title: "Screenwriter's notebook";
+    background: Skin.background;
+    default-font-family: "UbuntuMono";
+    default-font-size: Skin.base;
+
+    callback load_next_day();
+    callback load_prev_day();
+    callback event_note_changed(string, int, string);
+    callback event_title_changed(string, string);
+    callback event_note_add(string);
+    callback save_game_data;
+    callback add_new_event(string, string, int);
+
+    property <bool> is-change: false;
+    property <int> page: 1;
+    property <int> day: 1;
+    property <[DayEvent]> events;
+    property <[int]> events_in_days: [2,1,0,1,5,0,4,0,0,7,3,0];
+    property <int> event-id: 0;
+
+    GridLayout {
+      Row { Header {
+          day <=> root.day;
+          page <=> root.page;
+          is-change <=> root.is-change;
+          next_day => { root.load_next_day(); }
+          prev_day => { root.load_prev_day(); }
+          save_data => { root.save_game_data(); }
+      } }
+
+      Row { Rectangle {
+          if root.page == 1 : DayView {
+              page <=> root.page;
+              events <=> root.events;
+              event-id <=> root.event-id;
+          }
+
+          if root.page == 2 : EventEdit {
+              day <=> root.day;
+              page <=> root.page;
+              events <=> root.events;
+              event-id <=> root.event-id;
+              is-change <=> root.is-change;
+              title_changed(event_id, context) => { root.event_title_changed(event_id, context); }
+              note_changed(event_id, idx, context) => { root.event_note_changed(event_id, idx, context); }
+              note_add(event_id) => { root.event_note_add(event_id); }
+          }
+
+          if root.page == 3 : EventAdd {
+              day <=> root.day;
+              page <=> root.page;
+              events <=> root.events;
+              event-id <=> root.event-id;
+              is-change <=> root.is-change;
+              new_event(title, context, day) => { root.add_new_event(title, context, day); }
+          }
+      }}
+    }
+}

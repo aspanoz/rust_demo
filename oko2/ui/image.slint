@@ -1,0 +1,24 @@
+import { Skin, Size } from "common.slint";
+
+export Item := Rectangle {
+  property <image> image;
+  property <int> mode;
+
+	height: 100%;
+	width: 100%;
+
+	states [
+		view-menu when mode == 1: {
+    	opacity: 0.3;
+    }
+	]
+
+	Image {
+		source: root.image;
+		image-fit: contain;
+		x: Size.gap;
+		y: Size.gap;
+		height: root.height - Size.gaps[3];
+		width: root.width - Size.gaps[3];
+	}
+}

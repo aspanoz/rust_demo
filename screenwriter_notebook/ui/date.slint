@@ -1,0 +1,49 @@
+import { Skin } from "common.slint";
+
+export DateView := Text {
+  property <int> day;
+  property <[string]> day-names: Skin.day-short;
+  states [
+      june when day < 32 : { text: day-names[week-day] + ", " + day + " Июня"; }
+      jule when day < 62 : { text: day-names[week-day] + ", " + (day - 31) + " Июля"; }
+      august when day >= 62 : { text: day-names[week-day] + ", " + (day - 61) + " Августа"; }
+  ]
+  property <string> date: "";
+  property <int> week-day: mod(day + 1, 7);
+}
+
+
+export GameDateView := HorizontalLayout {
+  property <int> day;
+  property <[string]> day-names: Skin.day-long;
+
+  padding: Skin.gap;
+  spacing: Skin.gap;
+
+  Image {
+      source: @image-url("emoji_u1f4c5.svg");
+      image-fit: contain;
+      height: Skin.base;
+      width: Skin.base;
+  }
+
+  Image {
+      source: root.day < 22 ? @image-url("emoji_u264a.svg"):
+              root.day < 54 ? @image-url("emoji_u264b.svg"):
+              root.day < 84 ? @image-url("emoji_u264c.svg"):
+                              @image-url("emoji_u264d.svg");
+      image-fit: contain;
+      height: Skin.base;
+      width: Skin.base;
+  }
+
+  Rectangle { width: Skin.gap; }
+
+  DateView {
+      day <=> root.day;
+      horizontal-stretch: 1;
+      day-names: root.day-names;
+      color: Skin.border-color;
+      font-weight: Skin.font-fat;
+  }
+}

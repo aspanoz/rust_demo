@@ -1,0 +1,22 @@
+edition = "2021"
+
+tab_spaces = 2
+max_width = 120
+inline_attribute_width = 50
+use_small_heuristics = "Max"
+
+enum_discrim_align_threshold = 20
+struct_field_align_threshold = 20
+short_array_element_width_threshold = 20
+
+brace_style = "PreferSameLine"
+use_field_init_shorthand = true
+control_brace_style = "ClosingNextLine"
+fn_args_layout = "Compressed"
+format_strings = true
+imports_layout = "Horizontal"
+normalize_comments = true
+normalize_doc_attributes = true
+overflow_delimited_expr = true
+group_imports = "StdExternalCrate"
+wrap_comments = true

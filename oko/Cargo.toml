@@ -1,0 +1,50 @@
+[[bin]]
+  name = "oko"
+  path = "src/main.rs"
+
+[build-dependencies]
+  walkdir = "2.3.2"
+
+[dependencies]
+  anyhow = "1.0"
+  env_logger = "0.9.0"
+  fs_extra = "1.2.0"
+  futures = "0.3.21"
+  ksni = "0.2"
+  mime_guess = "2.0.3"
+  pretty_env_logger = "0.4.0"
+  rand = "0.8.4"
+  serde_json = "1.0.64"
+  tide = "0.16.0"
+  tide-websockets-sink = "0.3.0"
+  walkdir = "2.3.2"
+  tray-item = "0.7.0"
+  lazy_static = "1.4.0"
+  rexiv2 = "0.9"
+
+[target.'cfg(target_os="linux")'.dependencies]
+gtk = "0.15.4"
+libappindicator = "0.7" # Tray icon
+
+  [dependencies.async-std]
+    features = ["attributes"]
+    version = "1.10.0"
+
+  [dependencies.serde]
+    features = ["derive"]
+    version = "1.0.125"
+
+  [dependencies.tokio]
+    features = ["full"]
+    version = "~1"
+
+[package]
+  authors = ["Const Glukh <asapasapa@prontomail.com>"]
+  description = "Управление домашней медиатекой"
+  edition = "2021"
+  name = "oko"
+  publish = false
+  version = "0.1.3"
+
+  [package.metadata]
+      label = "Зазырь"

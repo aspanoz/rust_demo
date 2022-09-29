@@ -1,0 +1,88 @@
+import { Skin, Size, MediaItem } from "common.slint";
+import { Item } from "image.slint";
+import { Header } from "header.slint";
+import { Menu } from "menu.slint";
+import { Default } from "default.slint";
+
+import "./UbuntuMono-R.ttf";
+import "./UbuntuMono-B.ttf";
+
+export { MediaItem }
+export App := Window {
+	property <string> date: "Present day...";
+	property <string> time: "and time.";
+	property <int> seconds: 27;
+
+	property <string> status: "Initializing...";
+	property <bool> status-error: false;
+	property <[{ message: string, error: bool }]> status-log: [{message: "Initializing..."}];
+
+	property <image> bg-image;
+	property <string> bg-date;
+	property <string> bg-time;
+	property <string> bg-text: "Loading...";
+
+
+
+    title: "Oko";
+    background: Skin.bg;
+    default-font-family: "UbuntuMono";
+    default-font-size: Size.base;
+
+    property <image> image;
+    property <MediaItem> info;
+
+    // property <image> image: @image-url("tmp/gallery/Mammoth-thing-Mind-Control.jpg");
+    // property <MediaItem> info: { id: "whathever", path: "tmp/testdata", name: "Mammoth-thing-Mind-Control.jpg", tags: [], like: false, };
+
+    // добавлено новое событие c title и text
+    callback like_clicked();
+
+  	preferred-height: 1080px;
+  	preferred-width: 1080px;
+
+    // размер иконок
+    property <length> size: (width > height ? height : width) * 10%;
+    // включить режим отладки
+    property <bool> debug: false;
+    // property <bool> debug: true;
+
+    // mode - состояние программы
+    // 0 - просмотр картинки
+    // 1 - menu
+    property <int> mode: 1;
+
+    // файл с изображением
+		Item { mode <=> root.mode; image <=> root.image; }
+
+		// меню действий и режимов просмотра
+    GridLayout {
+      Row {
+        // шапочка с гамбургером
+				Header {
+					debug <=> root.debug;
+					size <=> root.size;
+					info <=> root.info;
+					mode <=> root.mode;
+				}
+			}
+      Row {
+				Rectangle {
+          // режим просмотра по умолчанию
+          if mode == 0: Default {
+  					debug <=> root.debug;
+          }
+
+					// меню верхнего уровня
+          if mode == 1: Menu {
+            like_clicked => {
+							root.info.like = !root.info.like;
+						}
+  					debug <=> root.debug;
+  					info <=> root.info;
+  					size: root.size;
+          }
+				}
+			}
+    }
+}

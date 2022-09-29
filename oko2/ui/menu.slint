@@ -1,0 +1,96 @@
+import { Skin, Size, MediaItem } from "common.slint";
+
+ActionButton := Rectangle {
+  property <bool> debug;
+  property <bool> active: true;
+  property <length> size;
+  property <image> image;
+  callback clicked();
+
+  max-height: 2 * root.size;
+  max-width: 2 * root.size;
+
+  border-radius: Size.radius;
+	background: #d9d9d936;
+
+  // @FIX: debug
+	states [
+		debug-on when debug: {
+    	background: #d9d9d948;
+      border-width: Size.border;
+      border-color: Skin.border;
+    }
+	]
+
+  Image {
+  		source: root.image;
+  		height: 2 * size;
+      colorize: Skin.bg;
+    	min-height: 2 * Size.base;
+  }
+  Image {
+      states [
+      	hovered when touch.has-hover && root.active: { opacity: 1; }
+      	active when !touch.has-hover && root.active: { opacity: 0.75; }
+      	hovered when touch.has-hover: { opacity: 0.66; }
+      	off when !root.active: { opacity: 0.25; }
+      ]
+  		source: root.image;
+  		image-fit: contain;
+  		height: 2 * size;
+    	min-height: 2 * Size.base;
+  }
+
+
+  touch := TouchArea {
+    clicked => {
+      root.clicked();
+    }
+	}
+}
+
+export Menu := Rectangle {
+  property <length> size;
+  property <bool> debug;
+  property <MediaItem> info;
+  // клик на кнопку лайка
+  callback like_clicked();
+
+  GridLayout {
+  	x: 0.5 * (width - 4 * root.size - 2 * Size.gap - Size.gaps[3]);
+  	spacing: Size.gaps[3];
+    padding: Size.gap;
+    Row {
+  			// настройки
+        ActionButton {
+          debug <=> root.debug;
+          size <=> root.size;
+          image: @image-url("emoji_u2699.svg");
+        }
+  			// удалить
+        ActionButton {
+          debug <=> root.debug;
+          size <=> root.size;
+          image: @image-url("emoji_u1f5d1.svg");
+        }
+    }
+    Row {
+        // тэги
+        ActionButton {
+          active: info.tags.length > 0;
+          debug <=> root.debug;
+  				size <=> root.size;
+  				image: @image-url("emoji_u1f516.svg");
+        }
+        // лайки
+        ActionButton {
+          clicked => { root.like_clicked(); }
+          active: info.like;
+          debug <=> root.debug;
+  				size <=> root.size;
+  				image: @image-url("emoji_u2b50.svg");
+        }
+    }
+    Row { Rectangle { vertical-stretch: 1; } }
+  }
+}

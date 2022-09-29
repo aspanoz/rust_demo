@@ -1,0 +1,20 @@
+[package]
+name = "jupen"
+version = "0.1.0"
+authors = ["Aspanoz <aspanoz@gmail.com>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+async-graphql = "~2.10.2"
+async-graphql-warp = "~2.10.2"
+warp = "0.3"
+
+log = "~0.4"
+listenfd = "0.3"
+hyper = { version = "0.14", features = ["stream", "server", "http1", "tcp", "client"] }
+async-stream = "0.3.0"
+
+futures = "0.3.0"
+
+borovylo-data = { version = "0.1.0", path = "../graphql/" }

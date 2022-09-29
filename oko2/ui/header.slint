@@ -1,0 +1,60 @@
+import { Skin, Size, MediaItem } from "common.slint";
+
+export Header := Rectangle {
+  property <length> size;
+  property <int> mode;
+  property <bool> debug: false;
+  property <MediaItem> info;
+
+  callback set_mode(int);
+
+  height: 2 * size;
+
+	states [
+		debug-on when debug: {
+      border-width: Size.border;
+      border-color: Skin.border;
+      menu.border-width: Size.border;
+      menu.border-color: Skin.border;
+    }
+	]
+
+ VerticalLayout {
+    HorizontalLayout {
+      alignment: center;
+      spacing: Size.gap;
+      menu := Rectangle {
+        property <int> next_mode;
+
+        width: 3 * root.size;
+
+      	states [
+      		view-image when mode == 0: {
+            icon.height: root.size;
+            icon.width: root.size;
+        		icon.x: root.size;
+        		icon.y: Size.gap;
+          	opacity: 0.7;
+            next_mode: 1;
+        		icon.source: @image-url("emoji_u2716.svg");
+					}
+
+      		view-menu when mode == 1: {
+            icon.height: root.size;
+            icon.width: root.size;
+        		icon.x: root.size;
+        		icon.y: 0.5 * root.size + Size.gap;
+            next_mode: 0;
+        		icon.source: @image-url("emoji_u2b55.svg");
+          }
+      	]
+
+      	icon := Image { opacity: touch.has-hover ? 1 : 0.66; }
+
+        touch := TouchArea {
+          clicked => { root.mode = parent.next_mode; }
+				}
+      }
+    }
+  }
+}

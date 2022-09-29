@@ -1,0 +1,25 @@
+[package]
+name = "borovylo-data"
+version = "0.1.0"
+authors = ["Aspanoz <aspanoz@gmail.com>"]
+edition = "2018"
+publish = false
+
+
+[dependencies]
+async-graphql = "~2.10.2"
+slab = "0.4.2"
+futures = "0.3.0"
+once_cell = "1.0"
+futures-timer = "3.0.2"
+async-stream = "0.3.0"
+log = "~0.4"
+lazy_static = "1.4.0"
+
+serde = { version = "1.0.125", features = ["derive"] }
+serde_json = "1.0.64"
+strum = "0.22"
+strum_macros = "0.22"
+
+tokio = { version = "~1", features = ["full"] }
+tokio-stream = "0.1.8"

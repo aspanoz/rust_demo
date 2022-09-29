@@ -1,0 +1,35 @@
+[package]
+authors = ["Const <devconst@proton.me>"]
+description = "T.S.T. Calendar"
+autobins = false
+publish = false
+edition = "2021"
+name = "tst-cal"
+version = "0.1.3"
+
+[package.metadata]
+label = "TST Cal"
+
+[[bin]]
+name = "tst-cal"
+path = "src/main.rs"
+
+[dependencies]
+gamedata = { version = "0.1.2", path = "gamedata/" }
+slint = { git = "https://github.com/slint-ui/slint" }
+
+[build-dependencies]
+slint-build = { git = "https://github.com/slint-ui/slint" }
+
+[workspace]
+members = ["gamedata"]
+resolver = "2"
+
+# [lib]
+# crate-type = ["cdylib"]
+# path = "src/main.rs"
+
+# [target.'cfg(target_arch = "wasm32")'.dependencies]
+# wasm-bindgen = { version = "0.2" }
+# web-sys = { version = "0.3" }
+# console_error_panic_hook = "0.1.5"

@@ -1,0 +1,364 @@
+[[params]]
+cc = 65
+label = "LEVEL"
+increment = 0.01
+min = 0.0
+max = 2.0
+value = 0.3
+
+[[params]]
+cc = 66
+label = "DENSITY"
+increment = 0.002
+min = 0.02
+max = 200
+value = 30.0
+
+[[params]]
+cc = 67
+label = "SIZE"
+increment = 0.001
+min = 0.01
+max = 2.0
+value = 0.1
+
+[[params]]
+cc = 68
+label = "OCT DIV"
+increment = 0.001
+min = 0.0
+max = 6.0
+value = 0.0
+
+[[params]]
+cc = 69
+label = "FREEZE"
+increment = 0.001
+min = 0.0
+max = 1.0
+value = 0.0
+
+[[params]]
+cc = 70
+label = "PITCH"
+increment = 0.001
+min = -2.0
+max = 2.0
+value = 1.0
+
+[[params]]
+cc = 71
+label = "PORT"
+increment = 0.001
+min = 0.0
+max = 20
+value = 0.0
+
+[[params]]
+cc = 82
+label = "ATTACK"
+increment = 0.001
+min = 0.0
+max = 2
+value = 0.005
+
+[[params]]
+cc = 81
+label = "RELEASE"
+increment = 0.002
+min = 0.01
+max = 2
+value = 0.1
+
+[[params]]
+cc = 74
+label = "BAND"
+increment = 0.01
+min = 0.0
+max = 30.0
+value = 3.0
+
+[[params]]
+cc = 78
+label = "SPEED"
+increment = 0.001
+min = -2
+max = 2
+value = 1.0
+
+[[params]]
+cc = 79
+label = "START"
+increment = 0.0005
+min = 0
+max = 1
+value = 0.0
+
+[[params]]
+cc = 80
+label = "RANGE"
+increment = 0.001
+min = 0.001
+max = 1
+value = 1.0
+
+[[params]]
+cc = 75
+label = "LFO RATE"
+increment = 0.001
+min = 0
+max = 8
+value = 0.0
+
+[[params]]
+cc = 76
+label = "LFO DENS"
+increment = 0.001
+min = -2
+max = 2
+value = 0.0
+
+[[params]]
+cc = 77
+label = "LFO SIZE"
+increment = 0.001
+min = -2
+max = 2
+value = 0.0
+
+[[params]]
+cc = 17
+label = "DECAY"
+increment = 0.001
+min = 0.002
+max = 0.2
+value = 0.005
+
+[[params]]
+cc = 18
+label = "RISE"
+increment = 0.001
+min = 0.002
+max = 0.2
+value = 0.002
+
+[[params]]
+cc = 72
+label = "RND POS"
+increment = 0.0001
+min = 0
+max = 0.3
+value = 0.0
+
+[[params]]
+cc = 73
+label = "RND PITCH"
+increment = 0.001
+min = 0
+max = 0.3
+value = 0.0
+
+[[params]]
+cc = 21
+label = "RND DENS"
+increment = 0.001
+min = 0.0
+max = 2
+value = 0.0
+
+
+
+# раскладка 0
+# [[layouts]]
+# lid = 0
+# position = 1
+# # . . . .
+# # . . 1 .
+# action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 2 # "DENSITY"
+position = 2
+# . . . .
+# . . . 2
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 3 # "SIZE"
+position = 3
+# . . 3 .
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 4 # "OCT DIV"
+position = 4
+# . . . 4
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 5 # "FREEZE"
+position = 5
+# . . . .
+# 5 . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 6 # "PITCH"
+position = 6
+# . . . .
+# . 6 . .
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 7 # "PORT"
+position = 7
+# 7 . . .
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 0
+pid = 1 # "LEVEL"
+position = 8
+# . 8 . .
+# . . . .
+action = "EditParam"
+
+
+
+# раскладка 1
+[[layouts]]
+lid = 1
+pid = 8 # "ATTACK"
+position = 1
+# . . . .
+# . . 1 .
+action = "EditParam"
+
+# [[layouts]]
+# lid = 1
+# position = 2
+# # . . . .
+# # . . . 2
+# action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 9 # "RELEASE"
+position = 3
+# . . 3 .
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 10 # "BAND"
+position = 4
+# . . . 4
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 11 # "SPEED"
+position = 5
+# . . . .
+# 5 . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 12 # "START"
+position = 6
+# . . . .
+# . 6 . .
+action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 13 # "RANGE"
+position = 7
+# 7 . . .
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 1
+pid = 14 # "LFO RATE"
+position = 8
+# . 8 . .
+# . . . .
+action = "EditParam"
+
+
+# раскладка 2
+[[layouts]]
+lid = 2
+pid = 15 # "LFO DENS"
+position = 1
+# . . . .
+# . . 1 .
+action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 16 # "LFO SIZE"
+position = 2
+# . . . .
+# . . . 2
+action = "EditParam"
+
+# [[layouts]]
+# lid = 2
+# position = 3
+# # . . 3 .
+# # . . . .
+# action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 17 # "DECAY"
+position = 4
+# . . . 4
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 18 # "RISE"
+position = 5
+# . . . .
+# 5 . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 19 # "RND POS"
+position = 6
+# . . . .
+# . 6 . .
+action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 20 # "RND PITCH"
+position = 7
+# 7 . . .
+# . . . .
+action = "EditParam"
+
+[[layouts]]
+lid = 2
+pid = 21 # "RND DENS"
+position = 8
+# . 8 . .
+# . . . .
+action = "EditParam"

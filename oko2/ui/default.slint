@@ -1,0 +1,14 @@
+import { Skin, Size } from "common.slint";
+
+export Default := Rectangle {
+  property <bool> debug;
+
+	states [
+		debug-on when debug: {
+			background: Colors.tomato;
+			opacity: 0.3;
+    }
+		debug-off when !debug: {
+		}
+	]
+}

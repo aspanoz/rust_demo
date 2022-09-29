@@ -1,0 +1,114 @@
+import { Skin, DayEvent, HorizontalLine, Button } from "common.slint";
+import { GameDateView } from "date.slint";
+
+Field := Rectangle {
+    callback changed(bool);
+    property <string> text: "";
+    property <bool> single-line: true;
+
+  	height: 3 * Skin.base + Skin.gaps[3];
+    Rectangle {
+      clip: true;
+    	width: parent.width - Skin.gaps[3];
+    	background: Skin.paper;
+      border-width: Skin.border-width;
+      border-color: Skin.border-color;
+      TextInput {
+        single-line <=> root.single-line;
+        text <=> root.text;
+      	height: root.height - Skin.gaps[3];
+      	width: parent.width - Skin.gaps[3];
+        wrap: word-wrap;
+        x: Skin.gap;
+        y: Skin.gap;
+        edited() => { root.changed(self.text != ""); }
+      }
+	}
+}
+
+Label := VerticalLayout {
+    property <string> text: "";
+    alignment: center;
+  	padding-top: Skin.gap;
+  	padding-left: Skin.gaps[3];
+    height: Skin.base + Skin.gaps[3];
+    Text {
+      text <=> root.text;
+      font-weight: Skin.font-bold;
+      font-size: 0.8 * Skin.base;
+      color: Skin.form-help;
+    }
+}
+
+EmptySpace := Rectangle { height: Skin.gaps[3]; }
+
+export EventAdd := VerticalLayout {
+  property <[DayEvent]> events;
+  property <int> event-id;
+  property <int> day;
+  property <int> page;
+  property <bool> is-title: false;
+  property <bool> is-context: false;
+  property <bool> is-change;
+
+  callback new_event(string, string, int);
+
+	GridLayout {
+		Row { Label { text: "игровой день"; } }
+    Row { GameDateView { day <=> root.day; } }
+		Row { EmptySpace { } }
+
+		Row { HorizontalLine {} }
+		Row { Label { text: "название"; } }
+		Row { VerticalLayout {
+      	padding-left: Skin.gap;
+        spacing: Skin.gap;
+        title := Field {
+        	height: Skin.base + Skin.gaps[3];
+        	width: root.width;
+          changed(value) => { root.is-title = value; }
+        }
+    		EmptySpace { }
+    } }
+
+		Row { HorizontalLine {} }
+		Row { Label { text: "описание"; } }
+		Row { VerticalLayout {
+      	padding-left: Skin.gap;
+        spacing: Skin.gap;
+        note := Field {
+          single-line: false;
+        	width: root.width;
+          changed(value) => { root.is-context = value; }
+        }
+    		EmptySpace { }
+    } }
+
+		Row { HorizontalLine {} }
+		Row { EmptySpace { } }
+		Row { HorizontalLayout {
+      	height: Skin.base + Skin.gaps[3];
+        spacing: Skin.gap;
+      	padding: Skin.gap;
+        Button {
+          fg: Skin.holyday;
+          disabled: !root.is-title || !root.is-context;
+        	width: 0.5 * (root.width - Skin.gaps[5]);
+          text: "СОЗДАТЬ";
+					clicked => {
+						root.new_event(title.text, note.text, root.day);
+            root.is-change = true;
+						root.page = 1;
+					}
+				}
+        Button {
+          fg: Skin.workday;
+        	width: 0.5 * (root.width - Skin.gaps[5]);
+          text: "ОТМЕНА";
+					clicked => {
+						root.page = 1;
+					}
+				}
+    } }
+	}
+}

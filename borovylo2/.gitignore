@@ -1,0 +1,5 @@
+/tmp
+/target
+src/app/web_view.rs
+Taskfile.yml
+*.graphql

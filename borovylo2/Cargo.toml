@@ -1,0 +1,39 @@
+[package]
+authors = ["Const Glukh <asapasapa@prontomail.com>"]
+autobins = false
+description = "Popedula"
+edition = "2021"
+name = "podula"
+publish = false
+version = "0.1.4"
+[package.metadata]
+label = "Popedula"
+[[bin]]
+name = "popedula"
+path = "app/main.rs"
+
+[dependencies]
+async-std = "1.11"
+crossbeam = "0.8.0"
+crossbeam-channel = "0.5.0"
+crossbeam-utils = "0.8.11"
+csound = "^0.1.8"
+gilrs = "0.8.1"
+ksni = "0.2.0"
+message-io = { version = "0.14", default-features = false, features = ["websocket"] }
+store = { version = "0.1.0", path = "store" }
+models = { version = "0.1.0", path = "models" }
+bincode = { git = "https://github.com/bincode-org/bincode" }
+
+
+anyhow = "1.0"
+futures = "0.3.21"
+tokio = { version = "~1", features = ["full"] }
+pasts = "0.11.0"
+
+[build-dependencies]
+toml = "0.4.2"
+
+[workspace]
+members = ["view", "store", "models"]
+resolver = "2"

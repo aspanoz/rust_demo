@@ -1,0 +1,122 @@
+export struct DayEvent := {
+    id: string,
+    title: string,
+    text: [string],
+    tags: [string],
+}
+
+export HorizontalLine := Rectangle {
+    height: Skin.border-width;
+    background: Skin.border-color;
+}
+
+export ButtonRound := Rectangle {
+  callback clicked;
+  height: Skin.title-height;
+  width: height;
+  border-radius: width * 50%;
+  background: Skin.add-button;
+  Image {
+      source: @image-url("emoji_u2795.svg");
+      colorize: Skin.paper;
+      image-fit: contain;
+      height: Skin.base;
+      width: Skin.base;
+      y: 0.5 * (Skin.title-height - Skin.base);
+      x: y;
+  }
+  TouchArea { clicked => { root.clicked(); } }
+}
+
+export Button := Rectangle {
+  callback clicked();
+  property <bool> disabled: false;
+  property <string> text;
+  property <color> fg: Skin.form-help;
+  property <color> fg-disabled: Skin.paper;
+  opacity: disabled ? 0.33 : 1;
+  border-width: Skin.border-width;
+  border-color: fg.brighter(33%);
+  height: Skin.base + Skin.gaps[3];
+  width: 100%;
+  background: fg.brighter(66%);
+  Text {
+    text <=> root.text;
+    color: disabled ? root.fg-disabled : root.fg;
+    y: 0.5 * (parent.height - height);
+    x: 0.5 * (parent.width - width);
+    font-weight: Skin.font-fat;
+    font-size: 1.15 * Skin.base;
+  }
+  TouchArea {
+    clicked => { if (!root.disabled) { root.clicked(); } }
+  }
+}
+
+export struct Act := {
+    label: string,
+    min: int,
+    max: int,
+		len: int
+}
+
+
+export global Skin := {
+    property <color> background: Colors.white.darker(8%);
+    property <color> bg: Colors.white.darker(8%);
+
+    property <color> paper: #ffffff;
+    property <color> fg: #444;
+    property <color> acent: #c9c9c9;
+
+    property <color> workday: Colors.skyblue.darker(20%);
+    property <color> holyday: #86b300;
+
+    property <color> chars-tag-bg: Colors.papayawhip;
+    property <color> chars-tag-fg: #a04000;
+
+    property <color> add-button: #cd5c5c;
+
+    property <color> navbar: #d5dbdb;
+
+    property <color> form-help: #d5dbdb.darker(33%);
+
+    property <color> marker: #fa8072;
+    property <color> many-marker: #f6358a.darker(5%);
+
+    property <length> gap: 10px;
+    property <[length]> gaps: [
+      gap * 0.5,  // 0
+      gap * 1.33, // 1
+      gap * 1.5,  // 2
+      gap * 2,    // 3
+      gap * 2.5,  // 4
+      gap * 3     // 5
+    ];
+
+    property <length> base: 32pt;
+
+    property <length> title-height: 36pt + gaps[4];
+
+    property <length> border-radius: 2px;
+    property <length> border-width: 1px;
+    property <color> border-color: #a9a9a9;
+
+    property <int> font-fat: 900;
+    property <int> font-bold: 600;
+		property <int> offset: 2;
+    property <[{ label: string, min: int, max: int, len: int }]> acts_: [
+			{ label: "Июнь", min: 0, max: 30, len: 30 },
+			{ label: "Июль", min: 30, max: 61, len: 31 },
+			{ label: "Август", min: 61, max: 92, len: 31 },
+		];
+    property <[int]> acts: [30, 31, 31];
+    property <[int]> acts-max: [30, 61, 92];
+    property <[int]> acts-min: [0, 30, 61];
+
+    property <int> len: acts_[0].len + acts_[1].len + acts_[2].len;
+    property <[string]> act-names: ["Июнь", "Июль", "Август"];
+
+    property <[string]> day-short: [ "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" ];
+    property <[string]> day-long: [ "Понедельник", "Вторник", "Среда", "Четверг", "Пятницa", "Суббота", "Воскресенье" ];
+}

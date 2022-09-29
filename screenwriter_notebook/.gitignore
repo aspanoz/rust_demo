@@ -1,0 +1,6 @@
+-*
+/tmp
+/target
+backup/
+tst-cal
+Taskfile.yml

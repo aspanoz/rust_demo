@@ -1,0 +1,18 @@
+# пока нет production сборки, не храю
+Cargo.lock
+package-lock.json
+yarn.lock
+data.db
+
+js/
+build/
+public/
+
+# nodejs error logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# генерятся автоматически из settings.toml
+graphql/src/schema/init.rs
+csound/variables.csd

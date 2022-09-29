@@ -1,0 +1,11 @@
+name = "Borovylo Playstation DualShock 4"
+type = "playstation"
+
+[remap]
+JoyX = { }
+JoyY = { event = "JoyY", deadzone = 0.3, scale = 0.81 }
+# JoyZ = { event = "JoyZ", max = 127, min = -128 }
+
+CamX = { }
+CamY = { event = "CamY", deadzone = 0.3, scale = 0.81 }
+# JoyZ = { event = "CamZ", max = 127, min = -128 }

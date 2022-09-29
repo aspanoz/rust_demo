@@ -1,0 +1,124 @@
+import { Skin, HorizontalLine } from "common.slint";
+import { DateView } from "date.slint";
+
+NavButton := Rectangle {
+  callback clicked(); // - реакция на клик, задается при вызове
+  property <bool> is-next: false; // поумолчанию загрузить картинку "предыдущий элемент"
+
+  width: Skin.base + Skin.gap;
+  height: Skin.base;
+
+  Image {
+      source: parent.is-next ? @image-url("emoji_u27a1.svg") : @image-url("emoji_u2b05.svg");
+      image-fit: contain;
+      width: 100%;
+      height: Skin.title-height - Skin.gaps[2];
+  }
+
+  area := TouchArea {
+    clicked => { root.clicked() }
+  }
+}
+
+export Header := Rectangle {
+  property <int> day;
+  property <bool> is-change;
+  property <int> page;
+
+  callback next_day();
+  callback prev_day();
+  callback save_data();
+
+  property <int> week-day: mod(day + 1, 7);
+
+  height: Skin.title-height;
+  background: Skin.navbar;
+
+  VerticalLayout {
+    HorizontalLayout {
+      alignment: start;
+      spacing: Skin.gap;
+
+      padding-left: Skin.gap;
+      padding-right: Skin.gap;
+      property <length> icon-height: root.height - Skin.gaps[2];
+      property <length> icon-y: 0.5 * (root.height - icon-height);
+
+      if root.page == 1 : HorizontalLayout {
+          width: 7 * Skin.base + 2 * (Skin.base + Skin.gap);
+
+          NavButton {
+              clicked => { if (root.day > 1) { root.prev_day(); } }
+              y: 0.5 * (parent.height - height);
+              opacity: day > 1 ? 1 : 0.1;
+          }
+
+          DateView {
+              day <=> root.day;
+              color: root.week-day > 4 ? Skin.holyday : Skin.workday;
+              font-weight: Skin.font-fat;
+              vertical-alignment: center;
+              horizontal-alignment: center;
+              y: 0.5 * (Skin.title-height - height);
+              min-width: 7 * Skin.base;
+          }
+
+          NavButton {
+              is-next: true;
+              clicked => { if (root.day < 91) { root.next_day(); } }
+              y: 0.5 * (parent.height - height);
+              opacity: day < 91 ? 1 : 0.1;
+          }
+      }
+
+      if root.page == 2 : HorizontalLayout {
+          width: 7 * Skin.base + 2 * (Skin.base + Skin.gap);
+          NavButton {
+              clicked => { root.page = 1; }
+              y: 0.5 * (parent.height - height);
+          }
+          Rectangle { }
+      }
+
+      if root.page == 3 : HorizontalLayout {
+          width: 7 * Skin.base + 2 * (Skin.base + Skin.gap);
+          NavButton {
+              clicked => { root.page = 1; }
+              y: 0.5 * (parent.height - height);
+          }
+          Rectangle { }
+      }
+
+      Rectangle { width: Skin.gap; }
+
+      Image {
+          y: parent.icon-y;
+          height: parent.icon-height;
+          width: parent.icon-height;
+          opacity: root.is-change ? 1 : 0.1;
+          source: @image-url("emoji_u1f4be.svg");
+          image-fit: contain;
+          TouchArea {
+            clicked => {
+              if (root.is-change) {
+                root.is-change = false;
+                root.save_data();
+              }
+            }
+          }
+      }
+
+      Image {
+          source: @image-url("emoji_u1f5d3.svg");
+          image-fit: contain;
+          height: parent.icon-height;
+          width: parent.icon-height;
+          y: parent.icon-y;
+          opacity: 0.1;
+      }
+      Rectangle { horizontal-stretch: 1; }
+    }
+    Rectangle {}
+    HorizontalLine { }
+  }
+}

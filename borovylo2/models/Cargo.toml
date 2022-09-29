@@ -1,0 +1,11 @@
+[package]
+authors = ["Const <asapasapa@prontomail.com>"]
+description = "Popedula, модель данных"
+edition = "2021"
+name = "models"
+publish = false
+version = "0.1.0"
+
+[dependencies]
+serde = { version = "1.0.125", features = ["derive"] }
+bincode = { git = "https://github.com/bincode-org/bincode" }

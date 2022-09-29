@@ -1,0 +1,156 @@
+// цвета для 3х состояний кнопки gamepad:
+//	 0) default  - доступна для клика
+//	 1) active   - активирована, повторный клик заблокирован
+//	 2) disabled - не доступна, клик не вызовет действий
+export struct ButtonColors := {
+    disabled: color,
+    default: color,
+    active: color,
+}
+
+export struct Control := {
+    name: string,
+    status: int,
+    action: int,
+		value: int,
+}
+
+export global Skin := {
+		// фон
+    property <color> background: #343c46;
+
+    // отступ
+    property <length> gap: 10px;
+
+		// настройки border'ов
+    property <length> border-radius: 6px;
+    property <length> border-width: 2px;
+    property <color> border-color: #343c46;
+
+    // настройки шрифтов
+    property <int> font-weight: 900;
+    // property <length> font-size: 36pt;
+
+		// кнопкa c действием EditParam
+    property <color> base-button: #a9a9a9;
+    property <ButtonColors> edit-button: {
+        disabled: background.brighter(55%),
+        default: base-button.darker(10%),
+        active: base-button.brighter(5%),
+    };
+
+		// кнопкa c действием LoadLayout
+    property <color> base-layout: #d4c5d4;
+    property <ButtonColors> layout-button: {
+        disabled: background.brighter(55%),
+        default: base-layout.darker(10%),
+        active: base-layout.brighter(5%),
+    };
+}
+
+// кнопка gamepad'а
+export Button := Rectangle {
+    property <Control> item: { name: "", status: 0, action: 0, value: 0 };
+    property <ButtonColors> colors: item.action == 0 ? Skin.edit-button : Skin.layout-button;
+
+    border-width: Skin.border-width;
+    border-radius: Skin.border-radius;
+  	border-color: Skin.background;
+
+    height: label.preferred-height * 1.33;
+    min-width: 10% * 1px;
+
+    // кнопкa укладывается в GridLayout с размером 4x3, размер кннопки 1/2 GridLayout
+    colspan: 2;
+    horizontal-stretch: 2;
+
+    states [
+        // кнопка не задана
+        disabled when item.status == 0 : {
+            opacity: 0.25;
+            background: colors.disabled;
+        }
+				// кнопка редактирования
+        default when item.status == 1 && item.action == 1 : {
+            opacity: 0.9;
+            background: Skin.background;
+            label.color: colors.default;
+          	border-color: colors.default;
+        }
+				// кнопка редактирования
+        default when item.status == 1 : {
+            opacity: 0.9;
+            background: colors.default;
+        }
+				// активировано редактирование
+        active when item.status == 2 : {
+            opacity: 1;
+            background: colors.active;
+        }
+    ]
+
+		value := Rectangle {
+        background: tomato;
+        height: parent.height;
+        width: (item.value * 1%) * parent.width;
+		}
+
+    label := Text {
+      	text: item.name;
+        x: (parent.width - width)/2;
+        y: (parent.height - height)/2;
+        font-weight: Skin.font-weight;
+        color: item.status == 2 ? #000 : Skin.background;
+    }
+}
+
+export Page := Rectangle {
+    background: Skin.background;
+		height: 100%;
+}
+
+
+
+//transitions [
+//    in disabled : {
+//        animate background, opacity, color { duration: 266ms; }
+//    }
+//    in active : {
+//        animate background { duration: 133ms; }
+//    }
+//]
+//visible: root.page-visible;
+//property <int> height: root.height;
+//     states [
+//         inactive when !page-visible : {
+//             height: 0;
+//             background: gold;
+//         }
+//         active when page-visible : {
+// 				}
+//     ]
+//     transitions [
+//         out inactive : {
+//             animate height { duration: 750ms; easing: ease-in-out; }
+//         }
+//         in inactive : {
+// //            animate height { duration: 1200ms; easing: ease-in; }
+//         }
+//     ]
+// блок с 4 кнопками
+// export ButtonBox := GridLayout {
+//     width: 46%;
+//     spacing: Skin.border-radius - Skin.border-width;
+//     property <Control> top;
+//     property <Control> start;
+//     property <Control> end;
+//     property <Control> bottom;
+//     // property <int> state-top: 0;
+//     // property <int> state-start: 0;
+//     // property <int> state-end: 0;
+//     // property <int> state-bottom: 0;
+//     Button { row: 0; col: 1; text: top.name;    state: top.state; }
+//     Button { row: 1; col: 0; text: start.name;  state: start.state; }
+//     Button { row: 1; col: 2; text: end.name;    state: end.state; }
+//     Button { row: 2; col: 1; text: bottom.name; state: bottom.state; }
+// }

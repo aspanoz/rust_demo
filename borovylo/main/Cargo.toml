@@ -1,0 +1,27 @@
+[package]
+name = "borovylo"
+version = "0.1.0"
+authors = ["Aspanoz <aspanoz@gmail.com>"]
+edition = "2018"
+publish = false
+
+[[bin]]
+name = "pompedullo"
+path = "src/main.rs"
+
+[dependencies]
+futures = { version = "~0.3" }
+tokio = { version = "~1", features = ["full"] }
+log = "~0.4"
+env_logger = "0.8"
+async-ctrlc = "~1.2"
+serde = { version = "1.0", features = ["derive"] }
+async-graphql = "~2.10.2"
+async-stream = "0.3.0"
+
+pasts = "0.8"
+
+podulo = { version = "0.1.0", path = "../midi" }
+borovylo-data = { version = "0.1.0", path = "../graphql/" }
+gamepad = { version = "0.1.0", path = "../gamepad" }
+jupen = { version = "0.1.0", path = "../web-client" }

@@ -1,0 +1,101 @@
+import { Skin, DayEvent, ButtonRound } from "common.slint";
+
+CharsTag := HorizontalLayout {
+  property <string> text: "";
+  property <length> chars-font-size;
+
+  Rectangle {
+    max-width: 2.5 * Skin.base;
+    height: Skin.base + Skin.gap;
+    y: root.height - height;
+
+    border-width: Skin.border-width;
+    border-color: Skin.border-color;
+
+    background: Skin.chars-tag-bg;
+
+    Text {
+        color: Skin.chars-tag-fg;
+        x: Skin.gap;
+        y: 0.5 * (parent.height - height);
+        font-weight: Skin.font-fat;
+        font-size: chars-font-size;
+        text: root.text;
+    }
+
+    Image {
+      y: 0.5 * (parent.height - height);
+      x: 2 * chars-font-size;
+      height: Skin.base - Skin.gaps[0];
+      source: @image-url("./emoji_u1f9d2.svg");
+    }
+  }
+}
+
+Note := Rectangle {
+    property <[string]> tags;
+    property <length> chars-font-size: Skin.base - Skin.gaps[2];
+    callback edit-event();
+    property <string> text;
+    height: tags.length > 0
+							? input.preferred-height + Skin.base + 4 * Skin.gap
+							: input.preferred-height + Skin.gaps[3];
+
+    Rectangle {
+      clip: true;
+      width: parent.width - Skin.gaps[3];
+      background: Skin.paper;
+      border-width: Skin.border-width;
+      border-color: Skin.border-color;
+      input := TextInput {
+        width: parent.width - Skin.gaps[3];
+        wrap: word-wrap;
+        text: root.text;
+        x: Skin.gap;
+        y: Skin.gap;
+      }
+
+      if tags.length > 0 : HorizontalLayout {
+          spacing: Skin.gaps[3];
+          padding: Skin.gap;
+          padding-top: Skin.gaps[3];
+          for tag-label in tags: CharsTag {
+            chars-font-size <=> root.chars-font-size;
+            text: tag-label;
+          }
+          Rectangle { horizontal-stretch: 1; }
+      }
+
+      TouchArea { clicked => { root.edit-event(); } }
+} }
+
+export DayView := VerticalLayout {
+  property <[DayEvent]> events;
+  property <int> event-id;
+  property <int> page;
+
+  GridLayout {
+
+    Row { VerticalLayout {
+        padding-top: Skin.gap;
+        padding-left: Skin.gap;
+        spacing: Skin.gap;
+        for event[index] in root.events: Note {
+            text: event.title;
+            tags: event.tags;
+            width: root.width;
+            edit-event() => {
+              root.event-id = index;
+              root.page = 2;
+            }
+        }
+    } }
+
+    Row { HorizontalLayout {
+        width: root.width;
+        padding-top: Skin.gaps[3];
+        alignment: center;
+        ButtonRound { clicked() => { root.page = 3; } }
+    } }
+  }
+}

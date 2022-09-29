@@ -1,0 +1,91 @@
+version: '3'
+
+silent: true
+ignore_error: true
+
+tasks:
+  watch:
+    desc: dev-сервер, reload при изменении
+    cmds:
+      - cmd: echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}} v{{.VERSION}},{{.OFF}} сервер разработки"
+      - cmd: |
+              RUST_LOG="info,tide=error" systemfd --no-pid -s http::9999 2>&1 -- cargo watch \
+                --clear --quiet \
+                --exec 'run --color=always' \
+                --watch src/
+
+  start:
+    desc: запуск c отладкой в консоль
+    cmds:
+      - clear
+      - cmd: echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}} v{{.VERSION}},{{.OFF}} сервер разработки"
+      - cmd: |
+              RUST_LOG="info,tide=error" cargo run --color=always
+
+  build:
+    desc: сборка
+    cmds:
+      - clear
+      - echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}} v{{.VERSION}},{{.OFF}} сборка приложения"
+      - cargo build --release
+
+  version:
+    desc: изменение младшей версии на единицу
+    vars:
+      NEXT:
+        sh: jq --null-input --arg k 'version' --arg v '{{.VERSION}}' '.| .[$k]=$v' | jq -r '.version | split(".") | .[0] + "." + .[1] + "." + (.[2] | tonumber + 1 | tostring)'
+    cmds:
+      - dasel put string -f Cargo.toml "package.version" "{{.NEXT}}"
+      - echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}},{{.OFF}} обновлен номер версии, version = {{.RED}}{{.NEXT}}{{.OFF}}"
+
+  doc:
+    desc: документация проекта
+    cmds:
+      - clear
+      - echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}} v{{.VERSION}},{{.OFF}} генерация документации"
+      - cargo doc
+
+  default:
+    cmds:
+      - cmd: |
+              selected=$({{.BIN}} -l | grep -v "task: Available" | fzf --preview-window hidden --cycle)
+              echo "$selected" | awk '{sub(/:$/, "", $2); print $2}' | xargs {{.BIN}} 2>/dev/null
+
+  list:
+    desc: список команд
+    cmds:
+      - clear
+      - echo -e "{{.ALLERT}}###{{.OFF}} {{.STRING}}{{.LABEL}} v{{.VERSION}},{{.OFF}} Список рецептов\n"
+      - |
+        for recept in $({{.BIN}} -l | tail -n +2 | sd '\* |:.*' ''); do
+          description=$({{.BIN}} --summary $recept | tail -n +3 | head -n 1);
+          if [[ "${recept}" == "list" ]]; then
+            continue
+          fi
+          echo -e " {{.GREEN}}$(printf '%-7s' $recept){{.OFF}}	{{.GREY}}- ${description}{{.OFF}}"
+        done
+
+vars:
+  BIN: go-task
+  PORT: 3000
+
+  NAME:
+    sh: dasel select -f Cargo.toml "package.name"
+
+  LABEL:
+    sh: dasel select -f Cargo.toml "package.metadata.label"
+
+  DESC:
+    sh: dasel select -f Cargo.toml "package.description"
+
+  VERSION:
+    sh: dasel select -f Cargo.toml "package.version"
+
+  ALLERT: \e[1;2;5;7;31m
+  RED: \e[2;31m
+  GREEN: \e[1;32m
+  CURRENT: \e[1;2;32m
+  GREY: \e[90m
+  BLUE: \e[1;2;34m
+  STRING: \e[2;70m
+  OFF: \e[0m

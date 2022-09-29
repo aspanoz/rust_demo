@@ -1,0 +1,101 @@
+import { Skin, Control, Button, ButtonColors, Page } from "common.slint";
+
+export { Control }
+export { ButtonColors }
+
+import "./fonts/NotoSans-Regular.ttf";
+import "./fonts/NotoSans-Bold.ttf";
+
+StartPage := Page {
+	background: #a75265;
+
+    label := Text {
+      	text: "PRESS START";
+        x: (parent.width - width)/2;
+        y: (parent.height - height)/2;
+        font-weight: Skin.font-weight;
+        font-size: 0.39 * (root.width * 20% + root.height * 20%);
+        color: #57385c;
+    }
+}
+
+MainPage := Page {
+    property <[Control]> controls;
+		VerticalLayout {
+      Rectangle { }
+      GridLayout {
+          padding: Skin.gap;
+
+          // down-left-right-up
+          GridLayout {
+              width: 46%;
+              spacing: Skin.border-radius - Skin.border-width;
+
+              Button { row: 2; col: 1; item: controls[4]; }
+              Button { row: 1; col: 0; item: controls[5]; }
+              Button { row: 1; col: 2; item: controls[6]; }
+              Button { row: 0; col: 1; item: controls[7]; }
+          }
+
+					Rectangle {}
+
+					// cross-square-circle-triangle
+          GridLayout {
+              width: 46%;
+              spacing: Skin.border-radius - Skin.border-width;
+
+              Button { row: 0; col: 1; item: controls[0]; }
+              Button { row: 1; col: 0; item: controls[2]; }
+              Button { row: 1; col: 2; item: controls[1]; }
+              Button { row: 2; col: 1; item: controls[3]; }
+          }
+    }
+}
+}
+
+export App := Window {
+    callback quit();
+
+    property <[Control]> controls: [
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+        { name: "", status: 0, action: 0, value: 0 },
+    ];
+
+		// какая страница открыта
+    property<int> active-page: 1;
+
+    title: "Borovylo GUI";
+  	background: Skin.background;
+    default-font-family: "NotoSans";
+    default-font-size: 0.39 * (root.width * 5% + root.height * 5%);
+
+		VerticalLayout {
+        main-view := Rectangle {
+            height: 100%;
+            padding: Skin.gap;
+
+            Rectangle {
+                clip: true;
+                x: main-view.padding * 0.5;
+                y: main-view.padding * 0.5;
+                width: main-view.width - main-view.padding;
+                height: main-view.height - main-view.padding;
+
+                StartPage {
+                    visible: active-page == 0;
+                }
+
+                MainPage {
+                    visible: active-page == 1;
+                    controls <=> root.controls;
+                }
+            }
+				}
+    }
+}
